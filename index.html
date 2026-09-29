@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SENTINEL | Sistema de Alarma para Paquetes</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <div class="brand"><div class="shield">🛡</div><div><h1>SENTINEL</h1><small>Sistema de Alarma para Paquetes</small></div></div>
+  <nav>
+    <button class="nav active">⌂ <span>Vista general</span></button>
+    <button class="nav">▦ <span>Componentes</span></button>
+    <button class="nav">◉ <span>Sensores</span></button>
+    <button class="nav">◌ <span>Historial</span></button>
+    <button class="nav">⚙ <span>Configuración</span></button>
+  </nav>
+  <div class="side-note">🛡<br><b>Tu seguridad,<br>nuestra prioridad</b></div>
+</aside>
+
+<main>
+<header class="topbar">
+  <b>▣ &nbsp; Sistema de Alarma para Paquetes</b>
+  <div class="top-info">
+    <span id="armedBadge" class="armed">♧ SISTEMA ARMADO</span>
+    <span>◉ Conexión: <strong>En línea</strong></span>
+    <span id="clock"></span>
+  </div>
+</header>
+
+<section class="content">
+<div class="center">
+  <h2>▣ &nbsp; Cámaras de seguridad <small id="scenarioStatus">Monitoreo exterior activo</small></h2>
+
+  <div class="tabs">
+    <button class="tab active" data-cam="0">▣ CAM 01 - Entrada</button>
+    <button class="tab" data-cam="1">▣ CAM 02 - Patio frontal</button>
+    <button class="tab" data-cam="2">▣ CAM 03 - Calle</button>
+    <button class="tab" data-cam="3">▣ CAM 04 - Lateral</button>
+  </div>
+
+  <div class="camera-grid">
+    <article class="camera selected" data-camera="0">
+      <span class="cam-name">▣ CAM 01 - Entrada principal</span><span class="rec">● REC</span>
+      <div class="scene entrance">
+        <div class="door"></div><div class="package"></div><div class="delivery"></div><div class="plant">🌿</div>
+      </div>
+      <span class="time" data-time="0">Esperando paquete...</span><span class="tag" data-tag="0">PAQUETE DETECTADO</span>
+    </article>
+
+    <article class="camera" data-camera="1">
+      <span class="cam-name">▣ CAM 02 - Patio frontal</span><span class="rec">● REC</span>
+      <div class="scene entrance">
+        <div class="door"></div><div class="package cam2package"></div><div class="person thief"></div>
+      </div>
+      <span class="time" data-time="1">Sin movimiento</span><span class="tag" data-tag="1">SIN MOVIMIENTO</span>
+    </article>
+
+    <article class="camera" data-camera="2">
+      <span class="cam-name">▣ CAM 03 - Calle</span><span class="rec">● REC</span>
+      <div class="scene street">
+        <div class="road"></div><div class="house"></div><div class="person walking"></div>
+      </div>
+      <span class="time" data-time="2">Sin movimiento</span><span class="tag" data-tag="2">SIN MOVIMIENTO</span>
+    </article>
+
+    <article class="camera" data-camera="3">
+      <span class="cam-name">▣ CAM 04 - Entrada lateral</span><span class="rec">● REC</span>
+      <div class="scene street">
+        <div class="gate"></div><div class="person walking lateral"></div>
+      </div>
+      <span class="time" data-time="3">Sin movimiento</span><span class="tag" data-tag="3">SIN MOVIMIENTO</span>
+    </article>
+  </div>
+
+  <div class="scenario-controls">
+    <button id="startScenario" class="start">▶ INICIAR SECUENCIA DE ROBO</button>
+    <button id="resetScenario">↻ REINICIAR ESCENA</button>
+    <span id="stepText">Paso 0/4 — Sistema vigilando</span>
+  </div>
+
+  <div class="bottom-grid">
+    <section class="panel">
+      <h3>♢ Vista en tiempo real <small>(ubicación del intruso)</small></h3>
+      <div class="map">
+        <div class="house-plan"><i>ENTRADA</i><i>PATIO</i><i>CASA</i><i>LATERAL</i></div>
+        <div class="route"></div><div id="mapIntruder" class="intruder">●</div>
+        <b class="mc m1">CAM 01</b><b class="mc m2">CAM 02</b><b class="mc m3">CAM 03</b><b class="mc m4">CAM 04</b>
+      </div>
+    </section>
+    <section class="panel">
+      <h3>▦ Registro de eventos</h3>
+      <div id="events" class="events">
+        <p class="blue">🔵 <b>--:--:--</b> Sistema listo — esperando actividad</p>
+      </div>
+    </section>
+  </div>
+</div>
+
+<aside class="right">
+<section class="panel">
+  <h3>🔒 Estado del sistema</h3>
+  <div class="protected"><span id="lockIcon">🔒</span><div><b id="systemText">Caja protegida</b><small id="sensorText">Sensores activos y vigilando</small></div></div>
+  <div class="actions"><button id="arm" class="green">♧ ARMAR</button><button id="disarm">♧ DESARMAR</button></div>
+  <button id="robbery" class="robbery">⚠ SIMULAR ROBO</button>
+  <label><input id="sound" type="checkbox" checked> Sonido de alarma</label>
+</section>
+
+<section class="panel">
+  <h3>◈ Componentes del sistema</h3>
+  <ul class="components">
+    <li>▣ <span><b>ESP32</b><small>Microcontrolador · Wi-Fi</small></span><em>●</em></li>
+    <li>▥ <span><b>Sensor magnético</b><small>Detección de apertura</small></span><em>●</em></li>
+    <li>∿ <span><b>Sensor de vibración</b><small>Detecta impactos</small></span><em>●</em></li>
+    <li>♙ <span><b>Sensor PIR</b><small>Detección de movimiento</small></span><em>●</em></li>
+    <li>♟ <span><b>Sirena + LED</b><small>Alerta local</small></span><em>●</em></li>
+    <li>▣ <span><b>Cámara IP</b><small>Grabación y transmisión</small></span><em>●</em></li>
+    <li>▱ <span><b>Celular</b><small>Monitoreo y notificaciones</small></span><em>●</em></li>
+  </ul>
+</section>
+
+<section id="alert" class="panel alert hidden">
+  <div class="siren">🚨</div><div><b>¡ROBO EN PROCESO!</b><small id="alertText">Intruso detectado en zona externa</small></div>
+  <button id="stop">🔊 DESACTIVAR ALARMA</button>
+</section>
+
+<section class="panel">
+  <h3>♧ Notificaciones</h3>
+  <div id="notifications" class="notifications">
+    <p>▣ Sistema listo <time>Ahora</time></p>
+    <p>◉ Grabación automática <time>Activa</time></p>
+    <p>⌖ Zona protegida <time>Exterior</time></p>
+  </div>
+</section>
+</aside>
+</section>
+</main>
+</div>
+<div id="toast"></div>
+<script src="script.js"></script>
+</body>
+</html>
